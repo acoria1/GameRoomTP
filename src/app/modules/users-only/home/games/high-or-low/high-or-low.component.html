@@ -1,0 +1,12 @@
+
+<div class="header">
+    <h1><strong>HIGH OR LOW</strong></h1>
+</div>
+<div class="high-or-low">
+    <div class="button-container">
+        <button mat-raised-button id="btnLow" (click)="handleAskForCard('Low')" color="warn">LOW</button>
+        <button mat-raised-button id="btnHigh" (click)="handleAskForCard('High')" color="warn">HIGH</button>
+    </div>
+    <app-hol-display [cards]="cards"></app-hol-display>
+</div>
+

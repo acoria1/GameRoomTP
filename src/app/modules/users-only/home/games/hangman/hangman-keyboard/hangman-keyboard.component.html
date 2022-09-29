@@ -1,0 +1,5 @@
+<div class="keyboard">
+    <div class="keys">
+        <button *ngFor="let key of keys" (click)="onKeyClick(key)" [disabled]="key.guessed" mat-flat-button color="accent">{{key.value}}</button>
+    </div>
+</div>

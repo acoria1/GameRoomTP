@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "lab4-primer-proyecto"
+  },
+  "targets": {
+    "lab4-primer-proyecto": {
+      "hosting": {
+        "GameRoomTP": [
+          "lab4-primer-proyecto"
+        ]
+      }
+    }
+  }
+}

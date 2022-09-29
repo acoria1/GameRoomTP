@@ -1,0 +1,7 @@
+<div>
+    <ng-container>
+        <div *ngFor="let card of cards; index as i">
+        <img class="card-img" [style.top.px] = "card.absolutePosition" [src]="card.info.image">
+        </div>        
+    </ng-container>
+</div>

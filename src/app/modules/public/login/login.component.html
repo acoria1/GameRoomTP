@@ -1,0 +1,46 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box box-slim">
+      <mat-card-header>
+        <mat-card-title>Log in</mat-card-title>
+      </mat-card-header>
+      <form [formGroup]="loginForm" (ngSubmit)="handleLogIn()">
+        <mat-card-content>
+          <mat-form-field class="example-full-width" hideRequiredMarker>
+            <input matInput type="email" name="email" formControlName="email"   placeholder="Email" autocomplete="email" required>
+            <mat-error
+            *ngIf="loginForm.controls['email'].hasError('required') && loginForm.controls['email'].touched">
+            Email is required
+            </mat-error>
+            <mat-error
+            *ngIf="loginForm.controls['email'].hasError('email') && loginForm.controls['email'].touched && !loginForm.controls['email'].hasError('required')">
+            Invalid email
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width" hideRequiredMarker>
+            <input matInput placeholder="Password" [type]="hidePassword ? 'password' : 'text'"  name="Password" formControlName="password"  autocomplete="current-password" required>
+            <mat-icon matSuffix (click)="togglePasswordVisibility()">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </mat-form-field>                  
+          <mat-error
+          *ngIf="this.invalidCredentials">
+            Invalid username or password
+          </mat-error>
+        </mat-card-content>        
+        <button [disabled]="!loginForm.valid" mat-stroked-button type="submit" color="accent" class="btn-block" >
+          Log in
+        </button>
+        <div class="formGroup">
+          <span class="or"><span class="orInner">Or</span></span>
+        </div>
+        <div class="formGroup">
+        <button mat-flat-button type="button" class="btn btn-block" color="primary" (click)="handleGoogleAuth()">
+          <i class="fab fa-google-plus-g"></i>
+          Log in with Google
+        </button>
+        </div>
+      </form>
+      <div>
+        <button (click)="setMockUser(0)" mat-raised-button>Mock User 1</button>
+        <button (click)="setMockUser(1)" mat-raised-button>Mock User 2</button>
+      </div>        
+    </mat-card>
+  </div>

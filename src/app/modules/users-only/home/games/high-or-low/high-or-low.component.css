@@ -1,0 +1,21 @@
+.high-or-low {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.button-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    min-width: 300px;
+}
+
+.restart{
+    margin-top: 20px;
+}
