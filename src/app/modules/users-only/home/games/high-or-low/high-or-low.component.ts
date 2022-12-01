@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
+import { AuthService } from 'src/app/services/users.service';
 import { Card } from './entities/card';
 import { HolDefeatDialogComponent } from './hol-defeat-dialog/hol-defeat-dialog.component';
 import { DeckOfCardsService } from './services/deck-of-cards.service';
+import { DatePipe } from '@angular/common';
+import { Score } from 'src/app/Entities/game-score';
 
 const CARD_SEPARATION_PX = 10;
 const INITIAL_CARD_POSITION_PX = 280;
@@ -28,7 +31,7 @@ export class HighOrLowComponent implements OnInit {
   selectedValue : HighLow;
   defeat = false;
 
-  constructor(private _cardsService : DeckOfCardsService, public defeatDialog : MatDialog, private _router : Router) { }
+  constructor(private _cardsService : DeckOfCardsService, public defeatDialog : MatDialog, private _router : Router, public usersService : AuthService, private datePipe : DatePipe) { }
 
   ngOnInit(): void {
     this._cardsService.getNewDeck().subscribe((response)=>{
@@ -65,14 +68,6 @@ export class HighOrLowComponent implements OnInit {
       INITIAL_CARD_POSITION_PX
   }
 
-  reset(){
-    this.cards.length = 0;
-    this._cardsService.getNewDeck().subscribe((response)=>{
-      this.deck_id = response.deck_id;
-      this.getNewCard();
-    });
-  }
-
   getRawValue(card : Card) : number{
     switch (card.value) {
       case 'JACK':
@@ -97,8 +92,14 @@ export class HighOrLowComponent implements OnInit {
         absolutePosition : this.getCardTopMargin()          
     });
     if (this.playerGuessedWrong(selected)){
-        this.openDefeatDialog({data : { score : this.score}});
+      this.usersService.addGameResult(this.getScore(), 'HighOrLow');
+      this.openDefeatDialog({data : { score : this.score}});
     }
+  }
+
+  playerGuessedWrong(selected : HighLow){
+    return this.currentCard > this.previousCard && selected == 'Low' 
+    || this.currentCard < this.previousCard && selected == 'High'
   }
 
   openDefeatDialog(data : {data :{ score : number}}){
@@ -112,8 +113,18 @@ export class HighOrLowComponent implements OnInit {
     })
   }
 
-  playerGuessedWrong(selected : HighLow){
-    return this.currentCard > this.previousCard && selected == 'Low' 
-    || this.currentCard < this.previousCard && selected == 'High'
+  reset(){
+    this.cards.length = 0;
+    this._cardsService.getNewDeck().subscribe((response)=>{
+      this.deck_id = response.deck_id;
+      this.getNewCard();
+    });
+  }
+
+  getScore() : Score{
+    return { 
+      date : this.datePipe.transform(Date.now(),'dd-MM-yyyy'), 
+      score : this.score
+    }
   }
 }

@@ -1,0 +1,9 @@
+<div [class]="classWrapper">
+    <mat-grid-list class="grid-layout-custom" [cols]="columns" rowHeight="3:1" gutterSize="5%">
+        <mat-grid-tile class="selectable bg-danger text-white" *ngFor="let button of buttons" (click)="buttonSelected(button)">
+            <div>
+                <h1>{{button}}</h1> 
+            </div>       
+        </mat-grid-tile>
+    </mat-grid-list>    
+</div>

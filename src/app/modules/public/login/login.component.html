@@ -3,8 +3,9 @@
       <mat-card-header>
         <mat-card-title>Log in</mat-card-title>
       </mat-card-header>
+      <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="handleLogIn()">
-        <mat-card-content>
+        
           <mat-form-field class="example-full-width" hideRequiredMarker>
             <input matInput type="email" name="email" formControlName="email"   placeholder="Email" autocomplete="email" required>
             <mat-error
@@ -24,7 +25,7 @@
           *ngIf="this.invalidCredentials">
             Invalid username or password
           </mat-error>
-        </mat-card-content>        
+               
         <button [disabled]="!loginForm.valid" mat-stroked-button type="submit" color="accent" class="btn-block" >
           Log in
         </button>
@@ -38,9 +39,14 @@
         </button>
         </div>
       </form>
-      <div>
-        <button (click)="setMockUser(0)" mat-raised-button>Mock User 1</button>
-        <button (click)="setMockUser(1)" mat-raised-button>Mock User 2</button>
-      </div>        
+      <div class="container">
+        <div class="row mb-2">
+          <button (click)="setMockUser(0)" mat-raised-button color="warn">Mock User 1</button>
+        </div>
+        <div class="row">
+          <button (click)="setMockUser(1)" mat-raised-button color="warn">Mock User 2</button>
+        </div>
+      </div>
+    </mat-card-content>         
     </mat-card>
   </div>

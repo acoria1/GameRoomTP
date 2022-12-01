@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "lab4-primer-proyecto"
+    "default": "game-room-e1554"
   },
   "targets": {
-    "lab4-primer-proyecto": {
+    "game-room-e1554": {
       "hosting": {
         "GameRoomTP": [
-          "lab4-primer-proyecto"
+          "game-room-e1554"
         ]
       }
     }

@@ -1,0 +1,21 @@
+<div class="trivia-crack-container">
+    <div class="wheel-container">
+        <ngx-wheel #wheel
+        width='450'
+        height='450'
+        spinDuration='6'
+        [disableSpinOnClick]='true'
+        [items]='categories'
+        [innerRadius]='50'
+        [spinAmount]='10'
+        pointerStrokeColor='red'
+        pointerFillColor='purple'
+        [idToLandOn]='idToLandOn'
+        (onSpinComplete)='afterWheelAnimation()'
+        >
+        </ngx-wheel>
+    </div>
+    <div class="wheel-footer">
+        <button mat-flat-button [disabled]="spinning" (click)="getTriviaQuestion()" color="warn">Spin</button>
+    </div>
+</div>

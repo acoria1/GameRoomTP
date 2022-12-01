@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { User } from '../Entities/user';
-import { User as FireUser} from 'firebase/auth' ; 
+import { User as FireUser} from 'firebase/auth' ;
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
@@ -8,55 +8,64 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { GameScore, Score } from '../Entities/game-score';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 
 export class AuthService {
-  userData: any; // Save logged in user data
+
+  userData: FireUser;
+  currentUser : User;
+  currentUser2 : BehaviorSubject<User>;
+
   constructor(
-    public afs: AngularFirestore, // Inject Firestore service
-    public afAuth: AngularFireAuth, // Inject Firebase auth service
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone,
+    private _db : AngularFirestore
   ) {
-    /* Saving user data in localstorage when 
-    logged in and setting up null when logged out */
+    this.currentUser2 = new BehaviorSubject<User>(new User (
+      "","user","",false,{creationTime:"",lastSignInTime:""},false,[]
+    ));
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
+        localStorage.setItem('auth', JSON.stringify(user));
+        this._db.collection('users').doc(user.uid).get().subscribe(data => {
+          localStorage.setItem('user', JSON.stringify(data.data()));
+          this.currentUser = User.objToCustomUser(data.data());
+          this.setCurrentUser(this.currentUser);
+        });        
       } else {
+        localStorage.setItem('auth', 'null');
         localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
       }
     });
   }
-  // Sign in with email/password
-  // SignIn(email: string, password: string) : Promise<void> {
-  //   return this.afAuth
-  //     .signInWithEmailAndPassword(email, password)
-  //     .then((result) => {
-  //       console.log(3);
-  //       this.SetUserData(result.user);
-  //       this.afAuth.authState.subscribe((user) => {
-  //         if (user) {
-  //           this.router.navigate(['users']);
-  //         }
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       window.alert(error.message);
-  //     });
-  // }
+
+  getCurrentUser(): Observable<User> {
+    return this.currentUser2.asObservable();
+  }
+
+  setCurrentUser(usr): void {
+    this.currentUser2.next(usr);
+  }
 
    // Returns true when user is looged in and email is verified
    get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    const user = JSON.parse(localStorage.getItem('auth')!);
+    return user !== null;
   }
+
+  get isAdmin(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user.isAdmin;
+  }
+
 
   SignIn(email: string, password: string) : Promise<any> {
     return this.afAuth.signInWithEmailAndPassword(email, password);
@@ -68,9 +77,6 @@ export class AuthService {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign 
-        up and returns promise */
-        // this.SendVerificationMail();
         result.user.updateProfile({displayName : username})
         .then(()=>{
           this.SetUserData(result.user);
@@ -80,34 +86,38 @@ export class AuthService {
       
   }
 
-  /* Setting up user data when sign in with username/password, 
-  sign up with username/password and sign in with social auth  
-  provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  SetUserData(user: any, username? : string) {
+  SetUserData(user: FireUser, username? : string) {
+    console.log("SET USER DATA");
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName ? user.displayName : username,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
-      metadata : { 
-        creationTime : user.metadata.creationTime, 
-        lastSignInTime : user.metadata.lastSignInTime 
-      }
-    };
-
-    return userRef.set(userData, {
+    return userRef.set(JSON.parse( JSON.stringify(this.fireUserToCustomUser(user))), {
       merge: true,
     });
+  }
+
+  fireUserToCustomUser(user : FireUser) {
+    return {
+      email : user.email,
+      displayName : user.displayName,
+      photoURL : user.photoURL,
+      emailVerified : user.emailVerified,
+      metadata : 
+      { 
+        creationTime : user.metadata.creationTime!, 
+        lastSignInTime : user.metadata.lastSignInTime
+      },
+      isAdmin : false,
+      gameScores : [],
+      uid : user.uid
+    }
   }
 
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.removeItem('auth');
       this.router.navigate(['public/login']);
     });
   }
@@ -130,23 +140,38 @@ export class AuthService {
       });
   }
 
-   // Send email verfificaiton when new user sign up
-  // SendVerificationMail() {
-  //   return this.afAuth.currentUser
-  //     .then((u: any) => u.sendEmailVerification())
-  //     .then(() => {
-  //       this.router.navigate(['verify-email-address']);
-  //     });
+  addGameResult (newScore : Score, gameName : string){
+    console.log(newScore);
+    this.currentUser.addScore(gameName, newScore);
+    this._db.collection('users').doc(this.currentUser.uid).set(JSON.parse( JSON.stringify(this.currentUser)), {
+      merge: true,
+    });
+    this.setCurrentUser(this.currentUser);
+  }
+
+  getUsers(){
+    return this._db.collection('users').valueChanges();
+  }
+
+  // updateAllResults(){
+  //   this.currentUser.gameScores.forEach(game => {
+  //     this.updateGameResults(game.gameName);
+  //   });
   // }
-  // // Reset Forggot password
-  // ForgotPassword(passwordResetEmail: string) {
-  //   return this.afAuth
-  //     .sendPasswordResetEmail(passwordResetEmail)
-  //     .then(() => {
-  //       window.alert('Password reset email sent, check your inbox.');
-  //     })
-  //     .catch((error) => {
-  //       window.alert(error);
-  //     });
+
+  // updateGameResults(gameName : string){
+  //   this._db.collection('users').doc(this.currentUser.uid).collection('results').doc(gameName).set(JSON.parse(JSON.stringify (this.getGameByName(gameName))), {
+  //     merge: true,
+  //   });
+  // }
+
+  // getGameByName(gameName : string){
+  //   return this.currentUser.gameScores.find(g => g.gameName == gameName);
+  // }
+
+  // initializeScores(){
+  //   if (this.currentUser.gameScores == undefined){
+  //     this.currentUser.gameScores = [];
+  //   }
   // }
 }

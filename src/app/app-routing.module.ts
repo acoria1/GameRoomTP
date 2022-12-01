@@ -4,7 +4,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'public' },
+  { path: '', pathMatch: 'full', redirectTo: 'public/login' },
   { path: 'public', loadChildren: () => import ('./modules/public/public.module').then(p=>p.PublicModule)},
   { path: 'users', loadChildren: () => import ('./modules/users-only/users-only.module').then(p=>p.UsersOnlyModule)},
   {path: '**', pathMatch : 'full', component: PageNotFoundComponent}
@@ -14,4 +14,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

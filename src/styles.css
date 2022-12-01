@@ -2,19 +2,14 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "https://use.fontawesome.com/releases/v5.5.0/css/all.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 
-html,
-body {
-  height: 100%;
-}
-
-body {
+/* body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   min-height: 100vh;
-}
+} */
 
 .app-header {
   justify-content: space-between;
@@ -22,16 +17,15 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 1;
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
 }
 
 .login-wrapper,
 .about-me-wrapper {
   height: 100%;
-  background: url(https://images.unsplash.com/photo-1591109864300-46c417fa0475?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80) no-repeat center;
+  background: url(https://images.unsplash.com/photo-1591109864300-46c417fa0475?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80) ;
   background-size: 140%;
-  padding-top:70px
 }
 .aboutme {
   text-decoration: none;
@@ -57,9 +51,12 @@ body {
 }
 .box-slim {
   max-width: 330px;
+  margin : 100px;
 }
 .box-wide{
-  max-width: 1330px;
+  max-width: 1030px;
+  margin-top : 50px;
+  margin-bottom: 250px;
 }
 .box.back {
   transform: scale(.95);
@@ -185,3 +182,8 @@ body {
   margin-bottom: 50px;  
 }
 
+div.spinner {
+  display: flex; 
+  justify-content: center;
+  margin-top:20px;
+}

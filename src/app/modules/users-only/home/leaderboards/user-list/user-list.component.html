@@ -1,0 +1,21 @@
+<mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="rank">
+        <mat-header-cell *matHeaderCellDef> Rank </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <strong>{{element.rank}}</strong> </mat-cell>
+        </ng-container>
+    <ng-container matColumnDef="displayName">
+    <mat-header-cell *matHeaderCellDef> Player </mat-header-cell>
+    <mat-cell *matCellDef="let element"> <strong>{{element.displayName}}</strong> </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="score">
+    <mat-header-cell *matHeaderCellDef> Highest Score </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.score}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+
+</mat-table>
+<mat-paginator [pageSizeOptions]="[10,20,50]" showFirstLastButtons></mat-paginator>

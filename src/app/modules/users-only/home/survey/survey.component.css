@@ -1,0 +1,12 @@
+.spinner-inner-text{
+    position: relative;
+    top: 30px;
+    left: -50px;
+    width: 100px;
+    text-align: center;
+}
+
+.survey-spinner{
+    position:relative;
+    left : 50px;
+}

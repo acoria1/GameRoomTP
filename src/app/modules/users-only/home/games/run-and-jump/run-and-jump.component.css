@@ -1,0 +1,53 @@
+.game{
+    width: 800px;
+    height: 300px;
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 50px;
+    padding:1px;
+    background: url(https://www.gameart2d.com/uploads/3/0/9/1/30917885/3622722_orig.jpg) no-repeat center;
+    background-size: 800px 300px;
+}
+#character{
+    width: 40px;
+    height: 70px;
+    position:relative;
+    top: 220px;
+    left : 20px;
+    background : url(../../../../../../assets/images/mummy-normal_origin.png) no-repeat center;
+    background-size: 40px 70px;
+}
+.animate{
+    animation: jump 0.3s linear;
+}
+@keyframes jump{
+    0%{top: 220px;}
+    10%{top: 200px;}
+    20%{top: 180px;}
+    30%{top: 155px;}
+    40%{top: 130px;}
+    50%{top: 130px;}
+    60%{top: 130px;}
+    70%{top: 155px;}
+    80%{top: 155px;}
+    90%{top: 180px;}
+    100%{top: 220px;}
+}
+
+#block{
+    width: 40px;
+    height: 30px;
+    position: relative;
+    top: 190px;
+    left: 755px;
+    animation: block 1.5s infinite linear;
+    background : url(../../../../../../assets/images/dessert-monster-normal_thumbnail.png) no-repeat center;
+    background-size: 40px 30px;
+}
+@keyframes block{
+    0%{left: 755px}
+    100%{left: -2px}
+}
+p{
+    text-align: center;
+}

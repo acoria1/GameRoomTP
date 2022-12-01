@@ -1,1 +1,37 @@
-<p>chatroom works!</p>
+<div style="overflow: scroll; height: xyz;" #scrollMe>
+
+
+<div class=" container-fluid chat-container" >
+    <div class="row">
+        <div class="menu">
+            <a routerLink="../home" routerLinkActive="router-link-active" class="back"><i class="fa fa-angle-left"></i> <img src="https://i.imgur.com/G4EjwqQ.jpg"
+                    draggable="false" /></a>
+            <div class="name">Public Chatroom</div>
+            <div class="members"><b>You</b> and 28 others are in this group</div>
+        </div>
+    </div>
+    <div class="row">
+        <ol class="chat">
+            <li *ngFor="let message of messages" [class]="message.uid == currentUser.uid ? 'self' : 'other'">
+                <div class="msg">
+                    <div *ngIf="message.uid != currentUser.uid" class="user">
+                        {{message.username}}
+                        <span *ngIf="message.isAdmin" class="range admin">Admin</span>
+                    </div>
+                    <p>{{message.message}}</p>
+                    <time>{{message.datetime | date : "dd/MM - HH:mm"}}</time>
+                </div>
+            </li>
+        </ol>
+    </div>
+    <div class="row">
+        <div class="typezone">
+                <textarea type="text" placeholder="Say something" [(ngModel)] = "newMessage" [ngModelOptions]="{standalone: true}"></textarea>
+                <button class="send" (click)="sendMessage()">
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                </button>
+        </div>
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,10 @@
+.trivia-crack-container{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    padding:5%;
+}
+
+.wheel-container{
+    margin-bottom: 20px;
+}

@@ -10,6 +10,9 @@ import { TriviaCrackComponent } from './home/games/trivia-crack/trivia-crack.com
 import { HangmanComponent } from './home/games/hangman/hangman.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutMeComponent } from 'src/app/components/about-me/about-me.component';
+import { RunAndJumpComponent } from './home/games/run-and-jump/run-and-jump.component';
+import { NewSurveyComponent } from './home/survey/new-survey/new-survey.component';
+import { AdminGuard } from '../../guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -21,10 +24,12 @@ const routes: Routes = [
       {path: 'my-profile', component:MyProfileComponent},
       {path: 'leaderboards', component:LeaderboardsComponent},
       {path: 'chatroom', component:ChatroomComponent},
-      {path: 'survey', component:SurveyComponent},
+      {path: 'surveys', component:SurveyComponent, canActivate : [AdminGuard]},
+      {path: 'submit-survey', component:NewSurveyComponent},
       {path: 'games/high-or-low',component:HighOrLowComponent},
       {path: 'games/trivia-crack', component:TriviaCrackComponent},
-      {path: 'games/hangman', component:HangmanComponent}
+      {path: 'games/hangman', component:HangmanComponent},
+      {path: 'games/run-and-jump', component:RunAndJumpComponent},
     ]
   }
 ]

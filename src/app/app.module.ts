@@ -29,14 +29,17 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AuthService } from './services/users.service';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { CorrectDialogComponent } from './components/correct-dialog/correct-dialog.component';
 // import { AuthService } from './services/users.service';
-
 
 @NgModule({
   declarations: [
     AppComponent,
     AboutMeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    SpinnerComponent,
+    CorrectDialogComponent
   ],
   imports: [
     BrowserModule,

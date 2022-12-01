@@ -1,1 +1,30 @@
-<p>leaderboards works!</p>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h1> LEADERBOARDS</h1>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2>Select game:</h2>
+        </div>
+        <div class="col">
+            <mat-form-field appearance="fill">
+                <mat-label>Game</mat-label>
+                <mat-select (selectionChange)="getUsersByGame(selectedGame)" [(value)]="selectedGame">
+                  <mat-option *ngFor="let game of games" [value]="game">{{game}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="mat-elevation-z2">
+                <app-user-list *ngIf="userScores" [userScores]="userScores"> </app-user-list>
+            </div>
+        </div>        
+    </div>
+</div>
+
+
+

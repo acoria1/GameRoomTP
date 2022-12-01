@@ -1,0 +1,8 @@
+.score-radio-group {
+    display: flex; flex-direction: column;
+    margin: 5px 0;
+}
+
+.score-radio-btn{
+    margin-bottom : 7px;
+}

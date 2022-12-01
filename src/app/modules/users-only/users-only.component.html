@@ -1,10 +1,12 @@
 <mat-toolbar color="primary" class="app-header">
     <div>
-      <a routerLink="about-me" routerLinkActive="router-link-active"  class="aboutme">about.me</a>
+      <a routerLink="home" routerLinkActive="router-link-active"  class="aboutme">Home</a>
     </div>
     <div class="nav-tool-items">
-      <a mat-button mat-raised-button color="basic" routerLink="home" routerLinkActive="active" class="nav-bar-items">
-        Home
+      <a *ngIf="auth.isAdmin" mat-button mat-raised-button color="accent" routerLink="surveys" routerLinkActive="router-link-active"  class="nav-bar-items">Surveys</a>
+      <a mat-button mat-raised-button color="basic" routerLink="home" routerLinkActive="router-link-active"  class="nav-bar-items">Games</a>
+      <a mat-button mat-raised-button color="basic" routerLink="chatroom" routerLinkActive="active" class="nav-bar-items">
+        Chatroom
       </a>
       <a mat-button mat-raised-button color="basic" routerLink="leaderboards" routerLinkActive="active" class="nav-bar-items">
         Leaderboards
@@ -12,11 +14,12 @@
         <mat-menu #appMenu="matMenu" xPosition="before" yPosition="below">
           <button mat-menu-item (click)="handleLogOut()">Log Out</button>
           <button mat-menu-item>My stats</button>
+          <button mat-menu-item routerLink="submit-survey" routerLinkActive="active">Fill Survey</button>
           <button mat-menu-item routerLink="my-profile" routerLinkActive="active">Configuration</button>
         </mat-menu>
         <button mat-raised-button [matMenuTriggerFor]="appMenu" class="nav-bar-items">
           <mat-icon>create</mat-icon>
-          {{auth.userData.displayName ? auth.userData.displayName : 'User'}}
+          {{auth.currentUser?.displayName || 'User'}}
         </button>     
     </div>
   </mat-toolbar>

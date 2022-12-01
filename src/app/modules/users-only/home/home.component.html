@@ -5,10 +5,10 @@
             <mat-card>
                 <mat-card-title>{{game.name}}</mat-card-title>                   
                 <mat-card-content>
-                    <img mat-card-lg-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" SameSite="Strict">
+                    <img mat-card-xl-image [src]="game.img" SameSite="Strict">
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-flat-button (click)="navigateToGame(game)">Play</button>
+                    <button mat-flat-button color="accent" (click)="navigateToGame(game)">Play</button>
                 </mat-card-actions>
             </mat-card>
         </mat-grid-tile>

@@ -1,1 +1,30 @@
-<p>trivia-crack works!</p>
+<div class="container">
+    <div class="row">
+        <h1>Score: {{score}}</h1>
+    </div>
+    <div class="row" *ngIf="!triviaQuestion && !loadingQuestion">
+        <div class="col">
+            <app-trivia-crack-wheel (idCategoriaSelecEvent)="setQuestion($event)" ></app-trivia-crack-wheel>
+        </div>
+    </div>
+    <div *ngIf="!loadingQuestion && triviaQuestion" class="row justify-content-center">
+        <div class="col col-lg-8 align-self-center text-center">
+            <h1>{{triviaQuestion.category}}</h1>
+            <h1>{{triviaQuestion.question}}</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="!loadingQuestion && triviaQuestion">
+        <div class="col col-lg-8 align-self-center ">
+            <app-trivia-crack-panel [buttons]="answers" (buttonClicked)="answerSelected($event)" [classWrapper]="'multiple-choice-container'" [columns]="2"></app-trivia-crack-panel>
+        </div>
+    </div>
+</div>
+<div *ngIf="loadingQuestion">
+    <div class="spinner">
+        <mat-spinner color="accent"></mat-spinner>
+    </div>
+</div>
+
+
+
+

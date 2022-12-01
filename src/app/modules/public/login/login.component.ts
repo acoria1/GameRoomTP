@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/Entities/user';
-// import { 
-//   Auth, 
-//   signInWithEmailAndPassword
-// } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/users.service';
@@ -40,20 +36,12 @@ export class LoginComponent implements OnInit {
     this.hidePassword = !this.hidePassword;
   }
 
-  // handleLogIn(){
-  //   this.auth.SignIn(
-  //     this.loginForm.get('email')!.value,
-  //     this.loginForm.get('password')!.value)
-  // }
-
   handleLogIn(){
     this.auth.SignIn(
       this.loginForm.get('email')!.value,
       this.loginForm.get('password')!.value)
       .then((result) => {
-        this.auth.SetUserData(result.user);
         this.auth.afAuth.authState.subscribe((user) => {
-          console.log(user);
           if (user) {
             this._router.navigate(['users/home']);
           }
@@ -61,7 +49,6 @@ export class LoginComponent implements OnInit {
       })
       .catch((error) => {
         this.invalidCredentials = true;
-        console.log(error);
       });
   }
 
